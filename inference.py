@@ -47,12 +47,11 @@ def init_model():
 
 
 if __name__ == "__main__":
-
     parser = init_parser()
     opt = parser.parse_args()
 
     device = torch.device(f"cuda:{opt.gpu_id}" if torch.cuda.is_available() else "cpu")
-    print(f'Device: {device}')
+    print(f"Device: {device}")
     if opt.paths:  # If filepath.txt file does not exists
         with open("filepaths.txt", "r") as file:
             list_of_images = file.read().split("\n")
@@ -81,10 +80,9 @@ if __name__ == "__main__":
             if not Path("captions").is_dir():
                 print(f"captions directory did not found.")
                 utils.create_dir("captions")
-                 
-            with open(f"captions/{batch_idx}_captions.txt", "w+") as file:
-                for path, image in zip(batch, transformed_images):
 
+            with open(f"{opt.input}/{batch_idx}_captions.txt", "w+") as file:
+                for path, image in zip(batch, transformed_images):
                     caption = model.generate(
                         image, sample=False, num_beams=3, max_length=20, min_length=5
                     )
